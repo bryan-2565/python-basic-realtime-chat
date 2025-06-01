@@ -1,0 +1,32 @@
+/* UserContainer.css */
+
+.userContainer {
+    /* Display and sizing */
+    display: flex;
+    width: 100%;
+    height: 100%;
+    
+    /* One space for layout */
+    align-items: center;
+}
+
+.userContainerSelected {
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: #e0e0e0;
+}
+
+.userContainer img {
+    /* Display and sizing */
+    aspect-ratio: 1;
+    height: 35px;
+}
+
+.userContainer span {
+    /* One space for layout */
+    margin-left: 10px;
+    
+    /* Text handling */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

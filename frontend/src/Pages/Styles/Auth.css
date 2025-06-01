@@ -1,0 +1,173 @@
+.pageContainer {
+    /* Display and sizing */
+    display: flex;
+    height: 100vh;
+    
+    /* One space for layout */
+    justify-content: center; 
+    align-items: center;
+    
+    /* Font */
+    color: white;
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: #1e1e20;
+    /* background: linear-gradient(to right, #1b0257 30%, #2f39c7 95%); */
+}
+
+.cardContainer {
+    /* Display and sizing */
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 300px;
+    
+    /* One space for layout */
+    align-items: center;
+    padding: 25px;
+    
+    /* Visual */
+    border-radius: 10px;
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: #323339;
+}
+
+.header,
+.subText {
+    /* One space for layout */
+    margin-bottom: 15px;
+}
+
+.subText {
+    /* Font */
+    font-size: 12.5px;
+    color: #ccc;
+}
+
+.formContainer {
+    /* Display and sizing */
+    width: 90%;
+}
+
+.inputElement {
+    /* Display and sizing */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 55px;
+    
+    /* One space for layout */
+    margin-bottom: 25px;
+}
+
+.inputElement input {
+    /* Display and sizing */
+    height: 100%;
+    
+    /* Box model */
+    padding: 15px;
+    
+    /* Visual */
+    border: 0;
+    border-radius: 5px;
+    
+    /* Font */
+    color: white;
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: #28282D;
+}
+
+.inputElement label {
+    /* Font */
+    font-size: 12.5px;
+    font-weight: bold;
+    color: #DFE0E2;
+    
+    /* One space for layout */
+    margin-bottom: 5px;
+}
+
+.submitButtonContainer {
+    /* Display and sizing */
+    width: 100%;
+    height: 35px;
+    
+    /* One space for layout */
+    margin-bottom: 10px;
+}
+
+.submitButtonContainer button {
+    /* Display and sizing */
+    width: 100%;
+    height: 100%;
+    
+    /* Visual */
+    border: 0;
+    border-radius: 7.5px;
+    
+    /* Font */
+    color: white;
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: #5865f2;
+    
+    /* Cursor */
+    cursor: pointer;
+}
+
+.submitButtonContainer button:hover {
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: #4753db;
+}
+
+.submitButtonContainer button:active {
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: #3944c2;
+}
+
+.toggleAuth {
+    /* Display and sizing */
+    display: flex;
+    
+    /* One space for layout */
+    align-items: center;
+}
+
+.toggleAuth label {
+    /* Font */
+    color: #ccc;
+    font-size: 11px;
+    
+    /* One space for layout */
+    margin-right: 5px;
+}
+
+.toggleAuth button {
+    /* Display and sizing */
+    height: 100%;
+    
+    /* Font */
+    font-size: 12px;
+    color: #8DA1FC;
+    
+    /* Visual */
+    border: 0;
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: transparent;
+}
+
+.toggleAuth button:hover {
+    /* Text decoration */
+    text-decoration: underline;
+}
+
+.toggleAuth a {
+    /* Font */
+    color: inherit;
+    
+    /* Text decoration */
+    text-decoration: none;
+}

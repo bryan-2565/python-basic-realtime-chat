@@ -1,4 +1,4 @@
-from Schemas.MessageSchemas import Message
+from Schemas.UserSchemas import Message
 from sqlalchemy.orm import Session
 
 def SendMessage(session: Session, message: Message) -> Message:
@@ -11,4 +11,4 @@ def GetUserMessages(session: Session, ourId: str, theirId: str):
     return session.query(Message).filter(
         ((Message.senderId == ourId) & (Message.receiverId == theirId)) |
         ((Message.senderId == theirId) & (Message.receiverId == ourId))
-    ).order_by(Message.createdAt.desc()).all()
+    ).order_by(Message.createdAt.asc()).all()

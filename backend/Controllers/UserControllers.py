@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from Models.UserModel import GetUser, GetUsers
 from Schemas.UserSchemas import User, UserRequest
 
-def TryGetUser(session: Session, userId: str):
+def TryGetUserById(session: Session, userId: str):
     try:
         return GetUser(session, userId);
     except Exception as e:

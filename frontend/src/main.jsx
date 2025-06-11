@@ -6,9 +6,9 @@ import './Styles/Fonts.css';
 import './main.css'
 
 createRoot(document.getElementById('root')).render(
-  // <StrictMode>
+  <StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  // </StrictMode>
+  </StrictMode>
 )

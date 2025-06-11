@@ -1,3 +1,4 @@
+from datetime import datetime
 from Schemas.UserSchemas import Message
 from sqlalchemy.orm import Session
 
@@ -5,6 +6,7 @@ def SendMessage(session: Session, message: Message) -> Message:
     session.add(message)
     session.commit()
     session.refresh(message)
+
     return message;
 
 def GetUserMessages(session: Session, ourId: str, theirId: str):

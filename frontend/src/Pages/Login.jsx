@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import toast from 'react-hot-toast';
 
 // ====================== COMPONENT ====================== //
-export default function Register() {
+export default function Login() {
     // ******************** STATE ******************** //
     const [formValues, setFormValues] = useState({
         username: "",
@@ -77,7 +77,7 @@ export default function Register() {
                     <div className="submitButtonContainer">
                         {isLoggingIn 
                             ? <label>Loading</label>
-                            : <button>Log In</button>
+                            : <button className='primaryButton'>Log In</button>
                         }
                     </div>
 

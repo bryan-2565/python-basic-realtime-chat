@@ -52,12 +52,19 @@ export const useChatStore = create((set, get) => ({
         set({areUsersLoading: true});
         const users = await fetchData('/')
         
-        set({areUsersLoading: false})
+        setTimeout(() => {
+          set({areUsersLoading: false})
+        }, 250)
 
         if(!users){
             return set({users: null})
         }
         set({users: users})
+    },
+    
+    // ▸ Set currently selected user
+    setSelectedUser: (user) => {
+        set({selectedUser: user})
     },
 
     // ▸ Fetch messages for specific user
@@ -66,43 +73,49 @@ export const useChatStore = create((set, get) => ({
         set({messages: []})
         
         const messages = await fetchData(`/messages/${userId}`)
+        
         set({ areMessagesLoading: false });
-
+        
         if(!messages){
-            return set({messages: null})
+          return set({messages: null})
         }
+        
         set({ messages: messages });
     },
 
-    // ▸ Set currently selected user
-    setSelectedUser: (user) => {
-        set({selectedUser: user})
+    // ▸ Add message to local state (optimistic updates)
+    addMessage: (newMessage) => {
+      const currentMessages = get().messages
+      set({messages: [...currentMessages, newMessage]})
     },
 
-    // ▸ Send new message to selected user
-    sendMessage: async (newMessage, wsConnection) => {
+    // ▸ Send new message via WebSocket with optimistic UI
+    sendMessage: async (newMessage, pfp, wsConnection) => {
         set({isSendingMessage: true})
-
         const receiverId = get().selectedUser.id
-        const sentMessage = await fetchData(
-            `/messages/${receiverId}`, 
-            {
-                method: "POST", 
-                body: JSON.stringify(newMessage)
-            }
-        )
 
-        set({isSendingMessage: false})
-
-        if(sentMessage){
-            const wsMessage = {
-              receiverId: receiverId,
-              text: newMessage.text
-            }
-
-            wsConnection.send(JSON.stringify(wsMessage))
-            const currentMessages = get().messages;
-            set({ messages: [...currentMessages, sentMessage] });
+        // ~~~~ Prepare Message Data ~~~~ //
+        newMessage = {
+          ...newMessage,
+          id: Date.now(),
+          receiverId: receiverId
         }
+
+        const optimisticMessage = {
+          ...newMessage,
+          // Temporary optimistic data - Ain't pretty but it works.
+          createdAt: new Date().toLocaleString('sv-SE').replace(' ', 'T'),
+          sender: {
+            pfpUrl: pfp
+          }
+        }
+        
+        // ~~~~ Update UI Immediately ~~~~ //
+        get().addMessage(optimisticMessage)
+        
+        // ~~~~ Send Via WebSocket ~~~~ //
+        wsConnection.send(JSON.stringify(newMessage))
+      
+        set({isSendingMessage: false})
     },
 }));

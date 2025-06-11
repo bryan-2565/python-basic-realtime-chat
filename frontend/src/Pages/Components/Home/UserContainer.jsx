@@ -1,13 +1,28 @@
 import "./Styles/UserContainer.css";
 
-export default function UserContainer({ pfp, username, isSelected, onSelect }) {
+// ====================== COMPONENTS ====================== //
+// ******************** USER CONTAINER ******************** //
+export function UserContainer({ pfp, username, isSelected, onSelect }) {
     return (
-        <div
-            className={`userContainer ${isSelected ? 'userContainerSelected' : ''}`}
-            onClick={() => onSelect()}
-        >
-            <img className="userImage" src={pfp} alt={username} />
-            <span className="userName">{username}</span>
+        <div className={`userContainer ${isSelected && "selected"}`} onClick={() => onSelect()}>
+            {/* · User Avatar · */}
+            <img src={pfp} alt="User profile"/>
+            
+            {/* · Username · */}
+            <label>{username}</label>
+        </div>
+    );
+}
+
+// ******************** USER CONTAINER PLACEHOLDER ******************** //
+export function UserContainerPlaceholder() {
+    return (
+        <div className={`userContainerPlaceholder`}>
+            {/* › Skeleton Avatar ‹ */}
+            <div className="userImagePlaceholder skeleton" />
+            
+            {/* › Skeleton Username ‹ */}
+            <span className="userNamePlaceholder skeleton" />
         </div>
     );
 }

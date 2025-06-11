@@ -1,4 +1,5 @@
 import './Styles/Auth.css'
+
 import { useState } from "react";
 import { useAuthStore } from "../Stores/useAuthStore";
 import { Link } from "react-router-dom";
@@ -25,7 +26,7 @@ export default function Register() {
         }));
     }
     
-    // ▸ Submit registration form
+    // ▸ Submit register form
     function submitForm(e) {
         e.preventDefault();
 
@@ -33,7 +34,7 @@ export default function Register() {
         if (hasEmptyField) {
             return toast.error("Please fill the form")
         }
-
+        
         register(formValues);
     }
 
@@ -46,7 +47,7 @@ export default function Register() {
             <div className="cardContainer">
                 {/* · Header · */}
                 <h2 className="header">Register Now</h2>
-                <p className="subText">Create your account to get started</p>
+                <p className="subText">Create your account to get started.</p>
 
                 {/* —— Form Container —— */}
                 <form className="formContainer" onSubmit={submitForm}>
@@ -75,8 +76,8 @@ export default function Register() {
                     {/* · Submit Button · */}
                     <div className="submitButtonContainer">
                         {isRegistering 
-                            ? <label>Loading</label>
-                            : <button>Register</button>
+                            ? <button className='primaryButton' style={{backgroundColor:'var(--button-primary-active)'}}><div className='spinner' style={{height:15, width:15}}/></button>
+                            : <button className='primaryButton'>Register</button>
                         }
                     </div>
 

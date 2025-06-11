@@ -33,9 +33,12 @@ class UserResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True, json_encoders={datetime: lambda v: v.isoformat()})
 
+class PfpUpdateRequest(BaseModel):
+    url: str
+
 # == Message ==
 class MessageRequest(BaseModel):
-    text: str
+    text: str = Field(..., max_length=1000)
     imgUrl: Optional[str] = ""
 
 class MessageResponse(MessageRequest):
@@ -70,27 +73,6 @@ class Message(Base):
     
     sender = relationship("User", back_populates="sentMessages", foreign_keys=[senderId])
     receiver = relationship("User", back_populates="receivedMessages", foreign_keys=[receiverId])
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "text": self.text,
-            "imgUrl": self.imgUrl,
-            "createdAt": self.createdAt.isoformat() if self.createdAt else None, #type: ignore
-            "updatedAt": self.updatedAt.isoformat() if self.updatedAt else None, #type: ignore
-            "senderId": self.senderId,
-            "receiverId": self.receiverId,
-            "sender": {
-                "id": self.sender.id,
-                "username": self.sender.username,
-                "avatarUrl": self.sender.avatarUrl if hasattr(self.sender, "avatarUrl") else None
-            } if self.sender else None,
-            "receiver": {
-                "id": self.receiver.id,
-                "username": self.receiver.username,
-                "avatarUrl": self.receiver.avatarUrl if hasattr(self.receiver, "avatarUrl") else None
-            } if self.receiver else None,
-        }
 
 
 class User(Base):

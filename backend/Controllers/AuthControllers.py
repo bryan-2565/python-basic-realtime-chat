@@ -25,7 +25,6 @@ def TryRegisterUser(session: Session, userRequest: UserRequest, res: Response):
         raise HTTPException(status_code=400, detail=(str(valueError)))
 
     except Exception as exception:
-        print(exception)
         raise HTTPException(status_code=500, detail='Internal server error...')
 
 def TryLoginUser(session: Session, userRequest: UserRequest, res: Response):

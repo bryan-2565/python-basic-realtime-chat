@@ -1,204 +1,247 @@
-import { useEffect, useRef, useState } from "react";
-import { useChatStore } from "../Stores/useChatStore";
-import { useAuthStore } from "../Stores/useAuthStore";
-import { Message } from "./Components/Home/Message";
-import UserContainer from "./Components/Home/UserContainer";
-import "./Styles/Home.css";
-
-let initialLoad = true;
+import './Styles/Home.css'
+import { useEffect, useRef, useState } from 'react';
+import { Message, MessagePlaceholder } from './Components/Home/Message';
+import { UserContainer, UserContainerPlaceholder } from './Components/Home/UserContainer';
+import { useChatStore } from '../Stores/useChatStore';
+import { useAuthStore } from '../Stores/useAuthStore';
+import toast from 'react-hot-toast';
 
 // ====================== COMPONENT ====================== //
-export default function Home() {
-    // ******************** STATE ******************** //
-    const [showSettings, setShowSettings] = useState(false);
-    const [isChatBarFocused, setChatBarFocused] = useState(false);
-    const [message, setMessage] = useState({ text: "", imgUrl: "" });
+export default function Grid() {
 
+    // ******************** STATE ******************** //
+    const [settingsVisible, setSettingsVisible] = useState(false)
+    const [previewPfp, setPreviewPfp] = useState(null)
+    const [message, setMessage] = useState({ text: "", imgUrl: "" });
+    
     // ******************** STORES ******************** //
-    const { authUser, ws, logout } = useAuthStore();
     const {
+        authUser, 
+        logout,
+        isUpdatingPfp,
+        updatePfp,
+        ws, 
+    } = useAuthStore();
+    
+    const {
+        areUsersLoading,
         users,
         getUsers,
-        areUsersLoading,
-        messages,
-        getMessages,
-        areMessagesLoading,
         selectedUser,
         setSelectedUser,
-        sendMessage
+        areMessagesLoading,
+        messages,
+        getMessages,
+        addMessage,
+        sendMessage,
     } = useChatStore();
 
     // ******************** REFS ******************** //
     const bottomRef = useRef(null);
 
-    // ******************** WEBSOCKET ******************** //
-    // ██ Handle incoming WebSocket messages
-    ws.onmessage = () => {
-        if (selectedUser) {      /* vertical centering */
-            getMessages(selectedUser.id);
-        }
-    };
-
     // ******************** EFFECTS ******************** //
     // ██ Fetch all users on initial render
     useEffect(() => {
-        getUsers();
-    }, []);
+        getUsers()
+    }, [])
 
     // ██ Fetch messages when selected user changes
     useEffect(() => {
-        if (selectedUser) {
-            initialLoad = true;
-            getMessages(selectedUser.id);
-        }
-    }, [selectedUser]);
-
-    // ██ Auto-scroll to bottom of messages
-    useEffect(() => {
-        if (bottomRef.current) {
-            if (initialLoad) {
-                bottomRef.current.scrollIntoView();
-            } else {
-                bottomRef.current.scrollIntoView(); // Removed smooth behavior
+        const handleGetMessages = async() => {
+            if (selectedUser){
+                await getMessages(selectedUser.id);
+                scrollToBottom();
             }
         }
-    }, [messages]);
 
-    // ******************** HANDLERS ******************** //
-    // ▸ Handle message input changes
-    function onMessageInput(e) {
-        const { name, value } = e.target;
-        setMessage((prev) => ({
-            ...prev,
-            [name]: value
-        }));
+        handleGetMessages();
+    }, [selectedUser])
+
+    // ██ Auto-scroll when messages update
+    useEffect(() => {
+        scrollToBottom(true)
+    }, [messages])
+
+    // ██ Handle WebSocket messages
+    ws.onmessage = (e) => {
+        if (selectedUser){
+            const newMessage = JSON.parse(e.data)
+            if(!(newMessage.senderId == selectedUser.id)){
+                return;
+            }
+
+            if (!(newMessage.senderId == authUser.id)){
+                addMessage(newMessage)
+            }
+        }
     }
 
-    // ▸ Send message and reset input
-    function handleSendMessage() {
-        initialLoad = false;
+    // ******************** HANDLERS ******************** //
+    // ▸ Send message to current chat
+    function handleSendMessage(){
         const trimmedText = message.text.trim();
         if (!trimmedText) return;
 
-        sendMessage({ ...message, text: trimmedText }, ws);
-        setMessage({ text: "", imgUrl: "" });
+        sendMessage({...message, trimmedText}, authUser.pfpUrl, ws)
+        setMessage({imageUrl: "", text: ""})
     }
 
-    // ▸ Select user to chat with
-    function selectUser(user) {
-        setSelectedUser(user);
+    // ▸ Scroll to bottom of chat
+    function scrollToBottom(smooth = false){
+        if (smooth){
+            return bottomRef.current?.scrollIntoView({behavior: "smooth"})
+        }
+        bottomRef.current.scrollIntoView();
     }
 
+    // ▸ Update user profile picture
+    function handleUpdatePfp(file){
+        if (!file || !file.type.startsWith("image/")){
+            return toast.error("Invalid image...")
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = async() => {
+            const base64Img = reader.result;
+            setPreviewPfp(base64Img)
+            updatePfp(base64Img)
+        }
+    }
+    
     // ******************** RENDER ******************** //
     return (
-        <div className="wrapper">
-            {/* ========== TOP BAR ========== */}
-            <div className="topBar">
-                <div className="searchUserContainer">
-                    <input type="text" placeholder="Find users" />
+        <div className="container">
+            
+            {/* ========== HEADER SIDEBAR ========== */}
+            <div className="headerSidebar">
+                <input type="text" placeholder='Find an user!'/>
+            </div>
+
+            {/* ========== MAIN HEADER ========== */}
+            <div className="header">
+                {selectedUser &&
+                    <div className="userInfo">
+                        <img className='userImage' src={(selectedUser && selectedUser.pfpUrl) || 'defaultPfp.png'}/>
+                        <span>{selectedUser && selectedUser.username}</span>
+                    </div>
+                }
+            </div>
+
+            {/* —— LEFT SIDEBAR —— */}
+            <div className="sidebar">
+                {/* · Users List · */}
+                <div className="sidebarUserContainer">
+                    {areUsersLoading && 
+                        Array.from({length: 20}).map((_, index) =>(
+                            <UserContainerPlaceholder key={index}/>
+                        ))
+                    }
+                    {users.map((user) => {
+                        if (user.id !== authUser.id) {
+                            return (
+                                <UserContainer
+                                    key={user.id}
+                                    pfp={user.pfpUrl || "/defaultPfp.png"}
+                                    username={user.username}
+                                    isSelected={selectedUser && selectedUser.id === user.id}
+                                    onSelect={() => setSelectedUser(user)}
+                                />
+                            );
+                        }
+                    })}
+                </div>
+            </div>
+
+            {/* —— ACCOUNT SIDEBAR —— */}
+            <div className="accountSidebar">
+                <div className="userInfo">
+                    <img className='userImage' src={(authUser && authUser.pfpUrl) || 'defaultPfp.png'}/>
+                    <span>{authUser.username}</span>
                 </div>
 
-                <div className="userStatus">
-                    {selectedUser && (
-                        <div className="userInfo">
-                            <img src={selectedUser.imgUrl || "/defaultPfp.png"} alt="User" />
-                            <label>{selectedUser.username}</label>
+                {/* · Account Controls · */}
+                <div className="accountButtons">
+                    <button onClick={() => setSettingsVisible(!settingsVisible)}>
+                        <img className='settingsImage' src='/icons/settings.png'/>
+                    </button>
+                    
+                    {settingsVisible &&
+                        <div className="accountSettings">
+                            <div className="lilBackground"/>
+                            <div className="userContent">
+                                <div className="pfpContainer">
+                                    {isUpdatingPfp && <div className="pfpContainerPlaceholder spinner"/>}
+                                    <img src={previewPfp || authUser.pfpUrl || '/defaultPfp.png'}/>
+                                </div>
+                                
+                                <span>{authUser.username}</span>
+                                
+                                <div className="pfpButtonContainer">
+                                    <label className='primaryButton' style={{cursor: "pointer"}}>
+                                        Change PFP
+                                        <input 
+                                            type="file" 
+                                            accept="image/*" 
+                                            style={{ display: 'none' }} 
+                                            onChange={(e) => handleUpdatePfp(e.target.files[0])}
+                                        />
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    )}
+                    }
+                    
+                    <button onClick={() => logout()}>
+                        <img className='logoutImage' src='/icons/signOut.png'/>
+                    </button>
                 </div>
             </div>
 
             {/* ========== MAIN CONTENT ========== */}
             <div className="content">
-                {/* —— LEFT SIDEBAR —— */}
-                <div className="leftBar">
-                    {/* · Users List · */}
-                    <div className="usersContainer">
-                        {areUsersLoading && <h3>Users are loading...</h3>}
+                {/* · Messages · */}
+                {areMessagesLoading &&
+                    Array.from({length: 20}).map((_, index) =>(
+                        <MessagePlaceholder key={index}/>
+                    ))
+                }
 
-                        {users.map((user) => (
-                            <UserContainer
-                                key={user.id}
-                                pfp="/defaultPfp.png"
-                                username={user.username}
-                                isSelected={selectedUser && user.id === selectedUser.id}
-                                onSelect={() => selectUser(user)}
-                            />
-                        ))}
-                    </div>
+                {messages.map((message) =>(
+                    <Message 
+                        key={message.id}
+                        pfp={message.sender && message.sender.pfpUrl}
+                        username={
+                            (message.sender && message.sender.username) ||
+                            (authUser.username) 
+                        } 
+                        time={message.createdAt} 
+                        text={message.text}
+                    />
+                ))}
 
-                    {/* · Current User Account · */}
-                    <div className="userAccount">
-                        <img src={authUser.imgUrl || "/defaultPfp.png"} alt="Profile" />
-                        <label>{authUser.username}</label>
+                <div ref={bottomRef} />
+            </div>
 
-                        <div className="userButtons">
-                            <button onClick={() => setShowSettings(!showSettings)}>
-                                <img src="/icons/settings.png" alt="Settings" />
-                            </button>
-                            <button onClick={() => logout()}>
-                                <img src="/icons/signOut.png" alt="Sign Out" />
-                            </button>
-                        </div>
-
-                        {/* › User Settings Dropdown ‹ */}
-                        {showSettings && (
-                            <div className="userSettings">
-                                <div className="pfpButtonContainer">
-                                    <img src="/icons/edit.png" alt="Edit" />
-                                    <button>Set PFP</button>
-                                </div>
-                                <img src={authUser.pfpUrl || '/defaultPfp.png'} alt="Profile" />
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {/* —— CHAT AREA —— */}
-                <div className="chat">
-                    {/* · Messages Container · */}
-                    <div className="messagesContainer">
-                        {areMessagesLoading && <h1>Messages are loading...</h1>}
-
-                        {messages.map((message) => (
-                            <Message
-                                key={message.id}
-                                username={
-                                    message.sender.id === authUser.id
-                                        ? authUser.username
-                                        : message.sender.username
-                                }
-                                time={message.createdAt}
-                                text={message.text}
-                            />
-                        ))}
-
-                        <div ref={bottomRef} />
-                    </div>
-
-                    {/* · Message Input · */}
-                    <div className={`chatBar ${isChatBarFocused ? 'chatBarFocused' : ''}`}>
+            {/* · Message Input · */}
+            {(selectedUser != null) &&
+                <div className="inputContent">
+                    <div className="inputContainer">
                         <input
-                            type="text"
-                            name="text"
-                            placeholder={selectedUser && `Message @${selectedUser.username}`}
-                            onFocus={() => setChatBarFocused(true)}
-                            onBlur={() => setChatBarFocused(false)}
+                            type="text" 
+                            placeholder={`Message @${selectedUser.username}`}
                             value={message.text}
-                            onChange={onMessageInput}
+                            onChange={(e) => setMessage((prev) => ({...prev, text: e.target.value}))}
                             onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
+                                if (e.key === "Enter"){
                                     handleSendMessage();
                                 }
                             }}
                         />
-
-                        <button className="chatBarSend" onClick={handleSendMessage}>
-                            <img src="/icons/sendMessage.png" alt="Send" />
-                        </button>
                     </div>
                 </div>
-            </div>
+            }
         </div>
-    );
+    )
 }

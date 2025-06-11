@@ -5,15 +5,14 @@ function sendMessage(message){
 }
 
 export default async function BasicErrorHandler(err){
-    // === Status Only Errors ===
     let errorMessage = ""
     let errJson = ""
 
-    
     if (err.body){
         errJson = await err.json();
     }
 
+    if (errJson.detail === "Invalid or expired token") return sendMessage("Invalid or expired token. Please log in again. Error code: 401")
     if (errJson.detail === "Wrong credentials") return sendMessage("Wrong credentials! Error code: 401")
 
     switch (err.status) {

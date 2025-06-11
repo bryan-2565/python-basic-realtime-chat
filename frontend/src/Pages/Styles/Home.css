@@ -1,374 +1,345 @@
-/* Home.css */
+/* ====================== LAYOUT ====================== */
+.container {
+    /* Display and sizing */
+    display: grid;
+    height: 100vh;
+    grid-template-rows: 50px 1fr 50px;
+    grid-template-columns: minmax(150px, 250px) 1fr;
+    grid-template-areas: 
+        "headerSidebar header"
+        "sidebar content"
+        "accountSidebar inputContent";
 
-/* ========== Layout: Wrapper ========== */
-.wrapper {
+    background-color: var(--theme-primary);
+}
+
+.container > * {
+    /* Display and sizing */
+    height: 100%;
+}
+
+/* ====================== HEADER AREAS ====================== */
+.headerSidebar {
+    /* Grid placement */
+    grid-area: headerSidebar;
+    
+    /* Display and sizing */
+    display: flex;
+    
+    /* Box model */
+    box-sizing: border-box;
+    
+    /* One space for layout */
+    justify-content: center;
+    align-items: center;
+    
+    /* Visual */
+    border-bottom: 1px solid var(--theme-border);
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-secondary);
+}
+
+.header {
+    /* Display and sizing */
+    display: flex;
+    
+    /* Box model */
+    box-sizing: border-box;
+    
+    /* Visual */
+    border-bottom: 1px solid var(--theme-border);
+}
+
+/* ====================== SIDEBAR AREAS ====================== */
+.sidebar {
+    /* Grid placement */
+    grid-area: sidebar;
+    
     /* Display and sizing */
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100vh;
     
     /* Overflow */
-    overflow: hidden;
+    overflow-y: auto;
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-secondary);
 }
 
-/* ========== Layout: Top Bar ========== */
-.topBar {
+.accountSidebar {
+    /* Grid placement */
+    grid-area: accountSidebar;
+    
     /* Display and sizing */
     display: flex;
-    width: 100%;
-    height: 7.5vh;
-    flex-shrink: 0;
     
     /* One space for layout */
     align-items: center;
     
     /* Visual */
-    border: 1px solid #ccc;
+    border: 1px solid var(--theme-border);
+    border-top-right-radius: 10px;
     
-    /* "Deep visual" like backgrounds, transitions... */
-    background-color: #f3f3f4;
+    /* Box model */
+    box-sizing: border-box;
 }
 
-.searchUserContainer {
+/* ====================== USER ELEMENTS ====================== */
+.userInfo {
     /* Display and sizing */
     display: flex;
-    width: 16%;
+    height: 100%;
+    
+    /* One space for layout */
+    align-items: center;
+    margin-left: 5px;
+    gap: 10px;
+}
+
+.accountButtons {
+    /* Display and sizing */
+    display: flex;
+    
+    /* Positioning */
+    position: relative;
+    
+    /* One space for layout */
+    margin-left: auto;
+    margin-right: 25px;
+    gap: 15px;
+}
+
+.accountSettings {
+    /* Display and sizing */
+    display: flex;
+    flex-direction: column;
+    width: 225px;
+    height: 275px;
+    
+    /* Positioning */
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Visual */
+    border: 1px solid var(--theme-border);
+    border-radius: 10px;
+    
+    /* Index */
+    z-index: 10;
+}
+
+/* ====================== MESSAGE AREAS ====================== */
+.content {
+    /* Grid placement */
+    grid-area: content;
+    
+    /* Display and sizing */
+    display: flex;
+    flex-direction: column;
+    
+    /* One space for layout */
+    padding-left: 15px;
+    
+    /* Overflow */
+    overflow-y: auto;
+    
+    /* Box model */
+    box-sizing: border-box;
+}
+
+.inputContent {
+    /* Grid placement */
+    grid-area: inputContent;
+}
+
+/* ====================== FORM ELEMENTS ====================== */
+.headerSidebar input {
+    /* Display and sizing */
+    width: 90%;
+    height: 40%;
+    
+    /* Box model */
+    padding: 5px;
+    
+    /* Font */
+    text-align: center;
+    
+    /* Visual */
+    border: 1px solid var(--theme-border);
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-secondary-highlight);
+}
+
+.inputContainer {
+    /* Display and sizing */
+    display: flex;
+    height: 100%;
     
     /* One space for layout */
     justify-content: center;
 }
 
-.searchUserContainer input {
+.inputContainer input {
+    /* Display and sizing */
+    width: 95%;
+    height: 80%;
+    
     /* Box model */
-    box-sizing: border-box;
-    width: 85%;
-    height: 30px;
-    padding: 10px;
+    padding-left: 15px;
     
     /* Visual */
-    border: 1px solid #ccc;
+    border: 1px solid var(--theme-border);
     border-radius: 5px;
-}
-
-.userStatus {
-    /* Display and sizing */
-    display: flex;
-    flex: 1;
-    width: 100%;
-    height: 100%;
-    
-    /* Visual */
-    border-bottom: 1px solid #ccc;
-    
-    /* Font */
-    font-weight: normal;
     
     /* "Deep visual" like backgrounds, transitions... */
-    background-color: #fbfbfb;
+    background-color: var(--theme-complementary);
 }
 
-.userInfo {
+/* ====================== IMAGE STYLES ====================== */
+img {
+    /* Display and sizing */
+    height: 70%;
+    max-width: 100%;
+}
+
+.userInfo img {
+    /* Display and sizing */
+    height: 70%;
+}
+
+.settingsImage,
+.logoutImage {
+    /* Display and sizing */
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 25px;
+    max-height: 20px;
+}
+
+/* ====================== BUTTON STYLES ====================== */
+.accountButtons button {
     /* Display and sizing */
     display: flex;
-    
-    /* One space for layout */
-    align-items: center;
-    margin-left: 15px;
-    gap: 10px;
-}
-
-.userStatus label {
-    /* Font */
-    font-size: 16px;
-}
-
-.userStatus img,
-.userAccount img {
-    /* Display and sizing */
-    aspect-ratio: 1;
-    height: 30px;
-}
-
-/* ========== Layout: Content ========== */
-.content {
-    /* Display and sizing */
-    display: flex;
-    flex: 1;
-    
-    /* Overflow */
-    overflow: hidden;
-}
-
-/* ========== Layout: Left Bar ========== */
-.leftBar {
-    /* Display and sizing */
-    display: flex;
-    flex-direction: column;
-    width: 16%;
-    height: 100%;
-    
-    /* Visual */
-    border-top: 1px solid #ccc;
-    
-    /* "Deep visual" like backgrounds, transitions... */
-    background-color: #f3f3f4;
-}
-
-.usersContainer {
-    /* Display and sizing */
-    display: flex;
-    flex-direction: column;
-    
-    /* One space for layout */
-    margin-top: 10px;
-    margin-left: 10px;
-    gap: 15px;
-    
-    /* Overflow */
-    overflow-y: auto;
-}
-
-.userAccount {
-    /* Display and sizing */
-    display: flex;
-    position: relative;
-    height: 50px;
-    flex-shrink: 0;
-    
-    /* One space for layout */
-    align-items: center;
-    margin-top: auto;
-    
-    /* Visual */
-    border: 1px solid #ccc;
-    border-top-right-radius: 12.5px;
-    
-    /* "Deep visual" like backgrounds, transitions... */
-    background-color: #fbfbfb;
-}
-
-.userAccount img,
-.userAccount label {
-    /* One space for layout */
-    margin-left: 10px;
-}
-
-.userButtons,
-.userAccount label {
-    /* Overflow */
-    overflow: hidden;
-}
-
-.userButtons {
-    /* Display and sizing */
-    display: flex;
-    
-    /* One space for layout */
-    margin-left: auto;
-    margin-right: 10px;
-    gap: 5px;
-}
-
-.userAccount button {
-    /* Display and sizing */
-    width: 24.375px;
+    width: 25px;
     height: 25px;
+    
+    /* One space for layout */
+    align-items: center;
+    justify-content: center;
     
     /* Visual */
     border: 0;
-    border-radius: 7.5px;
-    
-    /* Font */
-    font-size: 15px;
     
     /* "Deep visual" like backgrounds, transitions... */
     background-color: transparent;
 }
 
-.userAccount button img {
+.accountButtons button:hover {
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-secondary-highlight);
+}
+
+.accountButtons button:active {
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-secondary-active);
+}
+
+/* ====================== SETTINGS MODAL ====================== */
+.lilBackground {
     /* Display and sizing */
-    width: 100%;
-    height: 100%;
-    
-    /* One space for layout */
-    margin: 0;
+    min-height: 100px;
     
     /* Visual */
-    object-fit: contain;
-}
-
-.chatBarSend:hover,
-.userAccount button:hover {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
     /* "Deep visual" like backgrounds, transitions... */
-    background-color: #ccc;
+    background-color: #41392e;
 }
 
-.chatBarSend:active,
-.userAccount button:active {
-    /* "Deep visual" like backgrounds, transitions... */
-    background-color: #bbb;
-    transform: scale(0.96);
-}
-
-.userSettings {
+.userContent {
     /* Display and sizing */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    width: 75%;
-    height: 100px;
-    
-    /* Positioning */
-    position: absolute;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
     
     /* One space for layout */
     align-items: center;
-    padding: 10px;
     
     /* Visual */
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     
     /* "Deep visual" like backgrounds, transitions... */
-    background-color: white;
+    background-color: var(--theme-primary);
+}
+
+.pfpContainer,
+.pfpContainerPlaceholder {
+    /* Display and sizing */
+    display: flex;
+    width: 100px;
+    height: 100px;
     
-    /* Index */
-    z-index: 3;
+    /* One space for layout */
+    align-items: center;
+    justify-content: center;
+    margin-top: -50px;
+    
+    /* Visual */
+    border-radius: 50%;
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-primary);
+}
+
+.pfpContainer img {
+    /* Display and sizing */
+    height: 90%;
+    width: 90%;
+    
+    /* Visual */
+    border-radius: 50%;
+}
+
+/* ====================== UTILITY CLASSES ====================== */
+.sidebarUserContainer {
+    /* One space for layout */
+    margin-top: 5px;
+}
+
+.content > .messageContainer:first-child {
+    /* One space for layout */
+    margin-top: auto;
+}
+
+.pfpContainerPlaceholder {
+    /* Positioning */
+    position: absolute;
+    
+    /* One space for layout */
+    margin: 0;
+}
+
+.userContent span {
+    /* Font */
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .pfpButtonContainer {
     /* Display and sizing */
     display: flex;
-    height: 25px;
-    width: 100%;
+    width: 80%;
+    height: 30px;
     
     /* One space for layout */
+    margin-top: 10px;
     align-items: center;
-    margin-bottom: 10px;
-    
-    /* Visual */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.pfpButtonContainer img {
-    /* Display and sizing */
-    height: 70%;
-    aspect-ratio: 1;
-    
-    /* Positioning */
-    position: absolute;
-}
-
-.pfpButtonContainer button {
-    /* Display and sizing */
-    width: 100%;
-    height: 100%;
-    
-    /* Visual */
-    border-radius: 5px;
-}
-
-.userSettings img {
-    /* Display and sizing */
-    flex: 1;
-}
-
-/* ========== Layout: Chat Area ========== */
-.chat {
-    /* Display and sizing */
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    
-    /* One space for layout */
-    align-items: center;
-    
-    /* "Deep visual" like backgrounds, transitions... */
-    background-color: #fbfbfb;
-}
-
-.messagesContainer {
-    /* Display and sizing */
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 97.5%;
-    
-    /* One space for layout */
-    margin-top: 15px;
-    gap: 15px;
-    
-    /* Overflow */
-    overflow-y: auto;
-}
-
-.messagesContainer > :first-child {
-    /* One space for layout */
-    margin-top: auto !important;
-}
-
-/* ========== Layout: Chat Bar ========== */
-.chatBar {
-    /* Display and sizing */
-    display: flex;
-    flex-shrink: 0;
-    width: 92.5%;
-    height: 42.5px;
-    
-    /* One space for layout */
-    align-items: center;
-    justify-content: flex-end;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    
-    /* Visual */
-    border: 1px solid #ccc;
-    border-radius: 7.5px;
-}
-
-.chatBarFocused {
-    /* Visual */
-    border: 2px solid #3399FF;
-}
-
-.chatBar input {
-    /* Display and sizing */
-    width: 100%;
-    height: 100%;
-    
-    /* Box model */
-    box-sizing: border-box;
-    padding: 15px;
-    
-    /* Visual */
-    border: 0;
-    border-radius: 7.5px;
-    outline: none;
-    box-shadow: none;
-}
-
-.chatBarSend {
-    /* Display and sizing */
-    width: 25px;
-    height: 20px;
-    
-    /* One space for layout */
-    margin-right: 10px;
-    
-    /* Visual */
-    border: 0;
-    
-    /* "Deep visual" like backgrounds, transitions... */
-    background-color: transparent;
-}
-
-.chatBarSend img {
-    /* Display and sizing */
-    width: 100%;
-    height: 100%;
+    justify-content: center;
+    text-align: center;
 }

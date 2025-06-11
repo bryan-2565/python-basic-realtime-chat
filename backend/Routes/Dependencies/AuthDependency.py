@@ -24,10 +24,9 @@ def GetCurrentUser(req: Request, session: Session = Depends(getSession)):
 
         return user
 
-    except JWTError:
+    except JWTError as e:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
     except Exception as e:
-        print(e)
         raise HTTPException(status_code=500, detail='Internal server error...')
 

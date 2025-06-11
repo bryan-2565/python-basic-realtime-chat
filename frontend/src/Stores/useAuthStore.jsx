@@ -38,6 +38,7 @@ const initialState = {
     isRegistering: false,
     isLoggingIn: false,
     isLoggingOut: false,
+    isUpdatingPfp: false,
     ws: null,
 }
 
@@ -54,13 +55,15 @@ export const useAuthStore = create((set, get) => ({
             method: "POST",
         });
 
-        set({isCheckingAuth: false})
+        setTimeout(() =>{
+            set({isCheckingAuth: false})
+        }, 250)
         
         if (user) {
             set({authUser: user})
 
             if(get().ws == null) {
-                set({ws: new WebSocket(`ws://localhost:8000/ws/${user.id}`)})
+                set({ws: new WebSocket(`ws://localhost:8000/messages/ws/${user.id}`)})
             }
 
             toast.success("Welcome!")
@@ -110,5 +113,29 @@ export const useAuthStore = create((set, get) => ({
             get().checkAuth()
             toast.success("Successfully logged out!")
         }   
+    },
+
+    // ▸ Update profile picture
+    updatePfp: async(imgUrl) => {
+        set({isUpdatingPfp: true})
+
+        const success = await fetchData("/", {
+            method: "POST",
+            body: JSON.stringify({url: imgUrl})
+        })
+
+        if(success){
+            toast.success("Successfully updated profile picture!")
+        }
+
+        set({isUpdatingPfp: false})
+        
+        // ~~~~ Retrieve updated user data ~~~~ //
+        const user = await fetchData('/check', {
+            method: "POST",
+        });
+        if (user){
+            set({authUser: user})
+        }
     }
 }))

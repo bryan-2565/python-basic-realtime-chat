@@ -12,6 +12,9 @@ export default defineConfig({
     })
   ],
   server: {
-    host: true
+    host: true,
+    proxy:{
+      '/api': 'https://localhost:8000'
+    }
   }
 })

@@ -1,32 +1,49 @@
-/* UserContainer.css */
+/* Skeleton */
 
-.userContainer {
+.userNamePlaceholder {
     /* Display and sizing */
-    display: flex;
-    width: 100%;
-    height: 100%;
+    width: 150px;
+    height: 17.5px;
     
-    /* One space for layout */
-    align-items: center;
+    /* Visual */
+    border-radius: 25px;
 }
 
-.userContainerSelected {
-    /* "Deep visual" like backgrounds, transitions... */
-    background-color: #e0e0e0;
-}
-
+.userImagePlaceholder,
 .userContainer img {
     /* Display and sizing */
-    aspect-ratio: 1;
     height: 35px;
+    width: 35px;
+    
+    /* One space for layout */
+    margin-left: 15px;
+    
+    /* Visual */
+    border-radius: 50%;
 }
 
-.userContainer span {
-    /* One space for layout */
-    margin-left: 10px;
+.userContainer,
+.userContainerPlaceholder {
+    /* Display and sizing */
+    display: flex;
+    height: 50px;
+    width: 100%;
     
-    /* Text handling */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    /* One space for layout */
+    gap: 10px;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.userContainer:hover {
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-secondary-highlight);
+}
+
+.userContainer.selected {
+    /* One space for layout */
+    padding-left: 5px;
+    
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-secondary-active);
 }

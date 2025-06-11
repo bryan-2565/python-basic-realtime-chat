@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from Controllers.UserControllers import TryGetUserById, TryGetUsers
-from Schemas.UserSchemas import UserResponse
+from Schemas.UserSchemas import  UserResponse
 from db import getSession
 
 userRouter = APIRouter()

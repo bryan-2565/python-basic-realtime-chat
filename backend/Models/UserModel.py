@@ -1,5 +1,7 @@
-from Schemas.UserSchemas import User
+from Schemas.UserSchemas import PfpUpdateRequest, User, UserResponse
 from sqlalchemy.orm import Session
+
+from Util import CloudinaryUtil
 
 def CreateUser(session: Session, newUser: User) -> User:
     session.add(newUser)
@@ -19,3 +21,14 @@ def GetUserByUsername(session: Session, username: str):
 
 def GetUserById(session: Session, id: str):
     return session.query(User).filter(User.id == id).first()
+
+def UpdatePFP(session: Session, user: UserResponse, url: PfpUpdateRequest):
+    imgUrl = url.model_dump()['url'];
+    newImgUrl = CloudinaryUtil.UploadImage(imgUrl);
+
+    if user:
+        user.pfpUrl = newImgUrl["secure_url"];
+        session.commit();
+        session.refresh(user);
+        return user;
+    return None;

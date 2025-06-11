@@ -1,59 +1,89 @@
-/* Message.css */
-
+/* ====================== MESSAGE COMPONENTS ====================== */
 .messageContainer {
     /* Display and sizing */
     display: flex;
-    flex-shrink: 0;
     width: 100%;
+    height: auto;
     
     /* One space for layout */
-    flex-direction: row;
     align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 15px;
+    box-sizing: border-box;
 }
 
-.messageContentContainer {
+.messageContainer:hover {
+    /* "Deep visual" like backgrounds, transitions... */
+    background-color: var(--theme-primary-highlight);
+}
+
+/* ====================== MESSAGE CONTENT ====================== */
+.messageContent {
     /* Display and sizing */
     display: flex;
-    
-    /* One space for layout */
     flex-direction: column;
-    margin-left: 15px;
+    
+    /* Text */
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
-.userImage {
-    /* Display and sizing */
-    aspect-ratio: 1;
-    height: 35px;
-}
-
-.messageNameTimeContainer {
+/* ====================== MESSAGE HEADER ====================== */
+.messageHeader {
     /* Display and sizing */
     display: flex;
     
     /* One space for layout */
-    align-items: center;
+    align-items: flex-end;
     gap: 10px;
-    
+}
+
+.messageHeader span {
     /* Font */
-    font-size: 14px;
+    font-size: 12px;
+    
+    /* Visual */
+    color: var(--text-secondary);
 }
 
 .messageName {
     /* Font */
     font-weight: 500;
-}
-
-.messageTime {
-    /* Font */
-    font-size: 12px;
-    color: #7d7e87;
-}
-
-.messageContent {
-    /* Font */
-    font-family: Ginto;
+    font-size: 16px !important;
     
-    /* Text handling */
-    white-space: pre-wrap;
-    word-break: break-word;
+    /* Visual */
+    color: var(--text-primary) !important;
+}
+
+/* ====================== AVATAR STYLES ====================== */
+.messageContainer img,
+.userImage {
+    /* Display and sizing */
+    width: 35px;
+    height: 35px;
+    
+    /* Visual */
+    border-radius: 50%;
+}
+
+/* ====================== SKELETON LOADERS ====================== */
+.messageHeaderPlaceholder {
+    /* Display and sizing */
+    width: 100px;
+    height: 10px;
+    
+    /* One space for layout */
+    margin-bottom: 5px;
+    
+    /* Visual */
+    border-radius: 15px;
+}
+
+.messageTextPlaceholder {
+    /* Display and sizing */
+    width: 250px;
+    height: 15px;
+    
+    /* Visual */
+    border-radius: 2.5px;
 }

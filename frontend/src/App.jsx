@@ -1,59 +1,79 @@
-import Home from './Pages/Home.jsx'
-import Register from './Pages/Register.jsx'
-import Login from './Pages/Login.jsx'
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useAuthStore } from './Stores/useAuthStore.jsx';
 import { useEffect } from 'react';
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
+import { useAuthStore } from './Stores/useAuthStore.jsx';
+import Register from './Pages/Register.jsx';
+import Login from './Pages/Login.jsx';
+import Home from './Pages/Home.jsx';
 
-let checkedAuth = false
+// ====================== GLOBALS ====================== //
+let checkedAuth = false;
 
-export default function App(){
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+// ====================== COMPONENT ====================== //
+export default function App() {
+    // ******************** STORES ******************** //
+    const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
-  useEffect(() =>{
+    // ******************** EFFECTS ******************** //
+    // ██ Check authentication status on mount
+    useEffect(() => {
+        if (!checkedAuth) {
+            checkAuth();
+            checkedAuth = true;
+        }
+    }, []);
 
-    if (!checkedAuth){
-      checkAuth();
-      checkedAuth = true;
-    }
-  }, [])
+    // ******************** RENDER STATES ******************** //
+    // ▸ Show loading screen while checking auth
+    if (isCheckingAuth) {
+        return (
+            <div className='loadingScreen'>
+                <div className="spinnerChunky"/>
+            </div>
+        );
+    }  
 
-  if (isCheckingAuth){
-    return <h1>Loading...</h1>
-  }  
+    // ******************** MAIN RENDER ******************** //
+    return (
+        <>
+            {/* ========== ROUTES ========== */}
+            <Routes>
+                {/* · Root Redirect · */}
+                <Route 
+                    path='/'
+                    element={<Navigate to='/home'/>}
+                />
 
-  return(
-    <>
-      <Routes>
-        <Route 
-          path='/'
-          element= {<Navigate to='/home'/>}
-        />
-        <Route 
-          path='/home'
-          element= { authUser 
-                    ? <Home/>
-                    : <Navigate to='/login'/>
-                   }
-        />
-        <Route 
-          path='/login'
-          element= { !authUser 
-                    ? <Login/>
-                    : <Navigate to='/home'/>
-                   }
-        />
-        <Route 
-          path='/register'
-          element= { !authUser 
-                    ? <Register/>
-                    : <Navigate to='/home'/>
-                   }
-        />
-      </Routes>
+                {/* · Home Route · */}
+                <Route 
+                    path='/home'
+                    element={authUser 
+                        ? <Home/>
+                        : <Navigate to='/login'/>
+                    }
+                />
 
-      <Toaster/>
-    </>
-  )
+                {/* · Login Route · */}
+                <Route 
+                    path='/login'
+                    element={!authUser 
+                        ? <Login/>
+                        : <Navigate to='/home'/>
+                    }
+                />
+
+                {/* · Register Route · */}
+                <Route 
+                    path='/register'
+                    element={!authUser 
+                        ? <Register/>
+                        : <Navigate to='/home'/>
+                    }
+                />
+            </Routes>
+
+            {/* ========== TOASTER ========== */}
+            <Toaster/>
+        </>
+    );
 }

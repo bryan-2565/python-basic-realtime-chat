@@ -1,4 +1,5 @@
 from fastapi import  HTTPException, Request, Response
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from Models.UserModel import CreateUser, GetUserByUsername
@@ -11,7 +12,7 @@ def TryRegisterUser(session: Session, userRequest: UserRequest, res: Response):
         newUser = CreateUser(session, validUser).__dict__
 
         token = GenerateToken(newUser["id"])
-        res.set_cookie(
+        return res.set_cookie(
             key="jwt",
             value=token,
             httponly=True,
@@ -19,10 +20,11 @@ def TryRegisterUser(session: Session, userRequest: UserRequest, res: Response):
             secure=False  # only use True if you're serving over HTTPS
         )
 
-        return {"detail": "Succesfully logged in"}
-
     except ValueError as valueError:
         raise HTTPException(status_code=400, detail=(str(valueError)))
+
+    except IntegrityError as e:
+        raise HTTPException(status_code=409, detail="Username already exists.")
 
     except Exception as exception:
         raise HTTPException(status_code=500, detail='Internal server error...')

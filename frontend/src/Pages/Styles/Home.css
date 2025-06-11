@@ -97,7 +97,7 @@
     gap: 10px;
 }
 
-.accountButtons {
+.accountButtonContainer {
     /* Display and sizing */
     display: flex;
     
@@ -121,7 +121,7 @@
     position: absolute;
     bottom: 100%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0.95);
     
     /* Visual */
     border: 1px solid var(--theme-border);
@@ -129,6 +129,43 @@
     
     /* Index */
     z-index: 10;
+
+    opacity: 0;
+    pointer-events: none;
+    animation-duration: 200ms;
+    animation-fill-mode: forwards;
+}
+
+.accountSettings.open {
+    animation-name: fadeInSettings;
+}
+
+.accountSettings.closing {
+    animation-name: fadeOutSettings;
+}
+
+@keyframes fadeInSettings {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+        pointer-events: auto;
+    }
+}
+
+@keyframes fadeOutSettings {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.95);
+        pointer-events: none;
+    }
 }
 
 /* ====================== MESSAGE AREAS ====================== */
@@ -211,8 +248,8 @@ img {
     height: 70%;
 }
 
-.settingsImage,
-.logoutImage {
+.settingsIcon,
+.logoutIcon {
     /* Display and sizing */
     min-width: 20px;
     min-height: 20px;
@@ -221,11 +258,11 @@ img {
 }
 
 /* ====================== BUTTON STYLES ====================== */
-.accountButtons button {
+.accountButtonContainer button {
     /* Display and sizing */
     display: flex;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     
     /* One space for layout */
     align-items: center;
@@ -233,17 +270,18 @@ img {
     
     /* Visual */
     border: 0;
+    border-radius: 7.5px;
     
     /* "Deep visual" like backgrounds, transitions... */
     background-color: transparent;
 }
 
-.accountButtons button:hover {
+.accountButtonContainer button:hover {
     /* "Deep visual" like backgrounds, transitions... */
     background-color: var(--theme-secondary-highlight);
 }
 
-.accountButtons button:active {
+.accountButtonContainer button:active {
     /* "Deep visual" like backgrounds, transitions... */
     background-color: var(--theme-secondary-active);
 }

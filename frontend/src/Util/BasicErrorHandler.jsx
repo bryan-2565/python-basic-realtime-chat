@@ -22,6 +22,9 @@ export default async function BasicErrorHandler(err){
         case 422:
             errorMessage = "Invalid fields! Error code: 422"
             break;
+        case 409:
+            errorMessage = "This account already exists! Error code: 409"
+            break;
         case 401:
             errorMessage = "Not authorized! Error code: 401";
             break;

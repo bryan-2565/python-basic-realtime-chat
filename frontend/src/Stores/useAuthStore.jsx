@@ -77,6 +77,7 @@ export const useAuthStore = create((set, get) => ({
     // ▸ Register new user account
     register: async (registerData) => {
         set({isRegistering: true})
+        
         await fetchData('/register', {
             method: "POST",
             body: JSON.stringify(registerData)
@@ -111,6 +112,8 @@ export const useAuthStore = create((set, get) => ({
 
         if (success) {
             get().checkAuth()
+            set({ws: null})
+
             toast.success("Successfully logged out!")
         }   
     },

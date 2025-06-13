@@ -16,8 +16,8 @@ def TryRegisterUser(session: Session, userRequest: UserRequest, res: Response):
             key="jwt",
             value=token,
             httponly=True,
-            samesite="strict",
-            secure=False  # only use True if you're serving over HTTPS
+            samesite="none",
+            secure=True
         )
 
     except ValueError as valueError:
@@ -45,8 +45,8 @@ def TryLoginUser(session: Session, userRequest: UserRequest, res: Response):
             key="jwt",
             value=token,
             httponly=True,
-            samesite="strict",
-            secure=False  # only use True if you're serving over HTTPS
+            samesite="none",
+            secure=True
         )
 
     except ValueError as e:

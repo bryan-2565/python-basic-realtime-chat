@@ -19,6 +19,6 @@ app.add_middleware(CORSMiddleware,
     allow_headers=["*"]
 )
 
-app.include_router(userRouter)
+app.include_router(userRouter, prefix='/user')
 app.include_router(authRouter, prefix='/auth')
 app.include_router(messageRouter, prefix='/messages')

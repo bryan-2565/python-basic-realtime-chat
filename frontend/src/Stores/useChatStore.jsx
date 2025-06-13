@@ -50,7 +50,7 @@ export const useChatStore = create((set, get) => ({
     // ▸ Fetch all users from API
     getUsers: async() => {
         set({areUsersLoading: true});
-        const users = await fetchData('/')
+        const users = await fetchData('/user/')
         
         setTimeout(() => {
           set({areUsersLoading: false})

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import BasicErrorHandler from "../Util/BasicErrorHandler";
 
 // ====================== API CONFIGURATION ====================== //
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_IP = import.meta.env.VITE_API_URL;
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json"
 };
@@ -11,7 +11,7 @@ const DEFAULT_HEADERS = {
 // ██ Common fetch wrapper with error handling
 const fetchData = async (url, options = {}) => {
   try {
-    const res = await fetch(`${API_BASE_URL}${url}`, {
+    const res = await fetch(`http://${API_BASE_IP}${url}`, {
       ...options,
       headers: DEFAULT_HEADERS,
       credentials: 'include',

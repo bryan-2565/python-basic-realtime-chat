@@ -4,7 +4,7 @@ import BasicErrorHandler from '../Util/BasicErrorHandler';
 import { useChatStore } from './useChatStore';
 
 // ====================== API CONFIGURATION ====================== //
-const API_BASE_URL = import.meta.env.VITE_API_URL + "/auth";
+const API_BASE_IP = import.meta.env.VITE_API_URL + "/auth";
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json"
 };
@@ -13,7 +13,7 @@ const DEFAULT_HEADERS = {
 // ██ Common fetch wrapper with error handling
 const fetchData = async (url, options = {}) => {
   try {
-    const res = await fetch(`${API_BASE_URL}${url}`, {
+    const res = await fetch(`${API_BASE_IP}${url}`, {
       ...options,
       headers: DEFAULT_HEADERS,
       credentials: 'include',
@@ -64,7 +64,7 @@ export const useAuthStore = create((set, get) => ({
             set({authUser: user})
 
             if(get().ws == null) {
-                set({ws: new WebSocket(`ws://${API_BASE_URL}/messages/ws/${user.id}`)})
+                set({ws: new WebSocket(`ws://${API_BASE_IP}/messages/ws/${user.id}`)})
             }
 
             toast.success("Welcome!")

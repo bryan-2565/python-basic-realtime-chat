@@ -2,8 +2,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import uuid4
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-from sqlalchemy.dialects.mysql import DATETIME
-from sqlalchemy import Column, ForeignKey, String
+from sqlalchemy import TIMESTAMP, Column, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 from db import Base
@@ -65,8 +64,8 @@ class Message(Base):
     text = Column(String(800), nullable=False)
     imgUrl = Column(String(256), nullable=True)
 
-    createdAt = Column(DATETIME(fsp=6), default=datetime.now)
-    updatedAt = Column(DATETIME(fsp=6), default=datetime.now, onupdate=datetime.now)
+    createdAt = Column(TIMESTAMP, default=datetime.now)
+    updatedAt = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
 
     senderId = Column(String(36), ForeignKey("users.id"), nullable=False)
     receiverId = Column(String(36), ForeignKey("users.id"), nullable=False)
@@ -83,8 +82,8 @@ class User(Base):
     password = Column(String(256), nullable=False)
     pfpUrl = Column(String(256), nullable=True)
 
-    createdAt = Column(DATETIME(fsp=6), default=datetime.now)
-    updatedAt = Column(DATETIME(fsp=6), default=datetime.now, onupdate=datetime.now)
+    createdAt = Column(TIMESTAMP, default=datetime.now)
+    updatedAt = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
 
     sentMessages = relationship("Message", back_populates="sender", foreign_keys=[Message.senderId])
     receivedMessages = relationship("Message", back_populates="receiver", foreign_keys=[Message.receiverId])

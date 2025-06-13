@@ -53,7 +53,10 @@ export default function Grid() {
         const handleGetMessages = async() => {
             if (selectedUser){
                 await getMessages(selectedUser.id);
-                scrollToBottom();
+
+                if (!areMessagesLoading){
+                    scrollToBottom();
+                }
             }
         }
 
@@ -62,7 +65,9 @@ export default function Grid() {
 
     // ██ Auto-scroll when messages update
     useEffect(() => {
-        scrollToBottom(true)
+        if (!areMessagesLoading){
+            scrollToBottom(true)
+        }
     }, [messages])
 
     // ██ Close account settings popup when clicking outside

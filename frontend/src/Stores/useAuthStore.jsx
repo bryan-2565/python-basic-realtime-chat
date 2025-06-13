@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import toast from "react-hot-toast";
 import BasicErrorHandler from '../Util/BasicErrorHandler';
+import { useChatStore } from './useChatStore';
 
 // ====================== API CONFIGURATION ====================== //
 const API_BASE_URL = "http://localhost:8000/auth";
@@ -112,7 +113,26 @@ export const useAuthStore = create((set, get) => ({
 
         if (success) {
             get().checkAuth()
-            set({ws: null})
+            useChatStore.setState({
+                areUsersLoading: true,
+                users: [],
+
+                selectedUser: null,
+                
+                areMessagesLoading: false,
+                messages: [],
+
+                isSendingMessage: false,
+            })
+            set({
+                authUser: null,
+                isCheckingAuth: true,
+                isRegistering: false,
+                isLoggingIn: false,
+                isLoggingOut: false,
+                isUpdatingPfp: false,
+                ws: null,
+            })
 
             toast.success("Successfully logged out!")
         }   

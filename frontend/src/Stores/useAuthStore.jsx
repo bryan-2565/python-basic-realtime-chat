@@ -64,7 +64,7 @@ export const useAuthStore = create((set, get) => ({
             set({authUser: user})
 
             if(get().ws == null) {
-                set({ws: new WebSocket(`ws://localhost:8000/messages/ws/${user.id}`)})
+                set({ws: new WebSocket(`ws://${API_BASE_URL}/messages/ws/${user.id}`)})
             }
 
             toast.success("Welcome!")

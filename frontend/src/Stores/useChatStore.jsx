@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import BasicErrorHandler from "../Util/BasicErrorHandler";
 
 // ====================== API CONFIGURATION ====================== //
-const API_BASE_IP = import.meta.env.VITE_API_URL;
+const API_BASE_IP = import.meta.env.VITE_API_API;
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json"
 };

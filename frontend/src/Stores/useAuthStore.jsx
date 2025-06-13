@@ -4,7 +4,7 @@ import BasicErrorHandler from '../Util/BasicErrorHandler';
 import { useChatStore } from './useChatStore';
 
 // ====================== API CONFIGURATION ====================== //
-const API_BASE_URL = "http://localhost:8000/auth";
+const API_BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:8000/auth" : "/api/auth";
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json"
 };

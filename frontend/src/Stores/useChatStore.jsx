@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import BasicErrorHandler from "../Util/BasicErrorHandler";
 
 // ====================== API CONFIGURATION ====================== //
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:8000" : "/api";
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json"
 };

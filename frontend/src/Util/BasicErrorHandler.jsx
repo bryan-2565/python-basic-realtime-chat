@@ -9,7 +9,11 @@ export default async function BasicErrorHandler(err){
     let errJson = ""
 
     if (err.body){
-        errJson = await err.json();
+        try {
+            errJson = await err.json();
+        } catch (err) {
+            return sendMessage("There was an issue...")
+        }
     }
 
     if (errJson.detail === "Invalid or expired token") return sendMessage("Invalid or expired token. Please log in again. Error code: 401")

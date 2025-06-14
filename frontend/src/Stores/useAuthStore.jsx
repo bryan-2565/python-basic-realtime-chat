@@ -14,7 +14,7 @@ const DEFAULT_HEADERS = {
 // ██ Common fetch wrapper with error handling
 const fetchData = async (url, options = {}) => {
   try {
-    const res = await fetch(`http://${API_BASE_URL}${url}`, {
+    const res = await fetch(`https://${API_BASE_URL}${url}`, {
       ...options,
       headers: DEFAULT_HEADERS,
       credentials: 'include',
@@ -63,7 +63,7 @@ export const useAuthStore = create((set, get) => ({
             set({authUser: user})
 
             if(get().ws == null) {
-                set({ws: new WebSocket(`ws://${API_BASE_IP}/messages/ws/${user.id}`)})
+                set({ws: new WebSocket(`wss://${API_BASE_IP}/messages/ws/${user.id}`)})
             }
 
             toast.success("Welcome!")

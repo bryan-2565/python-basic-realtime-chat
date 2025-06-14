@@ -11,7 +11,7 @@ const DEFAULT_HEADERS = {
 // ██ Common fetch wrapper with error handling
 const fetchData = async (url, options = {}) => {
   try {
-    const res = await fetch(`http://${API_BASE_IP}${url}`, {
+    const res = await fetch(`https://${API_BASE_IP}${url}`, {
       ...options,
       headers: DEFAULT_HEADERS,
       credentials: 'include',

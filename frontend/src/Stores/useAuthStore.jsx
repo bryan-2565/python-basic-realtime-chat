@@ -57,9 +57,7 @@ export const useAuthStore = create((set, get) => ({
             method: "POST",
         });
 
-        setTimeout(() =>{
-            set({isCheckingAuth: false})
-        }, 250)
+        set({isCheckingAuth: false})
         
         if (user) {
             set({authUser: user})

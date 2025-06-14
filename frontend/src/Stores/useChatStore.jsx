@@ -52,9 +52,7 @@ export const useChatStore = create((set, get) => ({
         set({areUsersLoading: true});
         const users = await fetchData('/user/')
         
-        setTimeout(() => {
-          set({areUsersLoading: false})
-        }, 250)
+        set({areUsersLoading: false})
 
         if(!users){
             return set({users: null})
